@@ -6,6 +6,9 @@ import java.time.LocalTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties.Pageable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,10 +32,11 @@ public class CitaController {
     @Autowired
     private CitaRepository citaRepository;
 
-    @GetMapping()
-    public ResponseEntity<List<Cita>> getCitas() {
-            
-            List<Cita> Citas = this.citaRepository.findAll();
+    @GetMapping("all/{page}")
+    public ResponseEntity<Page<Cita>> getCitas(@PathVariable int page) {
+            PageRequest paging = PageRequest.of(page, 6);
+
+            Page<Cita> Citas = this.citaRepository.findAll(paging);
 
             if(Citas.isEmpty()){
                 throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No hay Citas registradas");
