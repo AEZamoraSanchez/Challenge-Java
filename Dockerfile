@@ -1,4 +1,4 @@
-FROM eclipse-temurin:22-jdk as build
+FROM eclipse-temurin:21-jdk as build
 
 COPY . /app
 WORKDIR /app
